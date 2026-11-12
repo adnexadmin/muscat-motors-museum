@@ -9,7 +9,8 @@ import { siteMediaQuery } from "@/lib/site-media";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
-  loader: ({ context }) => context.queryClient.ensureQueryData(siteMediaQuery),
+  // Do not crash the whole page if site media query fails (e.g. Supabase credits exhausted).
+  loader: ({ context }) => context.queryClient.ensureQueryData(siteMediaQuery).catch(() => null),
   head: () => ({
     meta: [
       ...shareMeta("/", "GearHead RC Hub — A New RC Experience for Oman", "A proposed Bousher-based RC flagship: performance models, scale crawlers, track-to-retail, service and strategic partnership opportunities."),
